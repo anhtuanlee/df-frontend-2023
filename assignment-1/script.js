@@ -19,7 +19,7 @@ const inputSearch = document.querySelector('.input_search')
 
 // take data from storage 
 const dataStorage = JSON.parse(localStorage.getItem('databook'))
-const dataBooks = dataStorage?.length > 0 ? dataStorage : []
+let dataBooks = dataStorage?.length > 0 ? dataStorage : []
 const dataUserStorage = JSON.parse(localStorage.getItem('user'))
 
 function App() {
@@ -53,7 +53,7 @@ function App() {
 
         btnCancel.addEventListener('click', handleCloseModalDelBook)
         btnCloseRemoveModal.addEventListener('click', handleCloseModalDelBook)
-        btnDel.addEventListener('click', (e) => handleDelBook(idBook)) // ? 
+        btnDel.addEventListener('click', (e) => handleDelBook(idBook, data)) // ? 
 
     }
     function renderModalDel(data) {
@@ -89,9 +89,9 @@ function App() {
         node.innerHTML = html
         return node
     }
-    function handleDelBook(idBook) {
-        const newData = dataBooks.filter((data, index) => index !== idBook)
-        dataBooks.splice(idBook, 1)
+    function handleDelBook(idBook, dataBook) {
+        const newData = dataBooks.filter((data, index) => data.name !== dataBook.name)
+        dataBooks = [...newData]
         handleRenderDataTable(newData)
         handleCloseModalDelBook()
     }
