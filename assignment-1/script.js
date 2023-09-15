@@ -103,6 +103,9 @@ function App() {
             document.querySelectorAll('input:not(.input_search)').forEach(item => item.value = '') // reset value input 
             if (inputSearch.value.trim() === '') {
                 handleRenderDataTable(dataBooks)
+            } else {
+                const dataFilter = dataBooks.filter(item => item.name.toLowerCase().includes(inputSearch.value))
+                handleRenderDataTable(dataFilter)
 
             }
             handleToggleModalAddBook()
