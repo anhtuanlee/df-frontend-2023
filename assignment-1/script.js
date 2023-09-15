@@ -100,8 +100,11 @@ function App() {
         const data = Object.fromEntries(new FormData(e.target).entries());
         if (checkIsHaveData(data)) {
             dataBooks.push(data)
-            document.querySelectorAll('input').forEach(item => item.value = '') // reset value input 
-            handleRenderDataTable(dataBooks)
+            document.querySelectorAll('input:not(.input_search)').forEach(item => item.value = '') // reset value input 
+            if (inputSearch.value.trim() === '') {
+                handleRenderDataTable(dataBooks)
+
+            }
             handleToggleModalAddBook()
         } else {
             alert('Vui Long Nhap Day Du')
@@ -118,10 +121,9 @@ function App() {
         return true
     }
     function handleSearchItem(e) {
-        let valueSearch = e.target.value
+        let valueSearch = e.target.value.trim().toLowerCase()
         if (valueSearch.trim() !== '') {
-            let itemFilter = dataBooks.filter(item => item.name === valueSearch)
-
+            let itemFilter = dataBooks.filter(item => item.name.toLowerCase().includes(valueSearch))
             handleRenderDataTable(itemFilter)
         } else {
             handleRenderDataTable(dataBooks)
