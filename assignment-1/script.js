@@ -89,25 +89,28 @@ function App() {
         node.innerHTML = html
         return node
     }
+    function handleCheckInputSearch() {
+        if (inputSearch.value.trim() !== '') {
+            const dataFilter = dataBooks.filter(item => item.name.toLowerCase().includes(inputSearch.value.toLowerCase()))
+            handleRenderDataTable(dataFilter)
+        } else {
+            handleRenderDataTable(dataBooks)
+        }
+    }
     function handleDelBook(idBook, dataBook) {
         const newData = dataBooks.filter((data, index) => data.name !== dataBook.name)
         dataBooks = [...newData]
-        handleRenderDataTable(newData)
+        handleCheckInputSearch()
         handleCloseModalDelBook()
     }
+
     function handleAddBook(e) {
         e.preventDefault()
         const data = Object.fromEntries(new FormData(e.target).entries());
         if (checkIsHaveData(data)) {
             dataBooks.push(data)
             document.querySelectorAll('input:not(.input_search)').forEach(item => item.value = '') // reset value input 
-            if (inputSearch.value.trim() === '') {
-                handleRenderDataTable(dataBooks)
-            } else {
-                const dataFilter = dataBooks.filter(item => item.name.toLowerCase().includes(inputSearch.value))
-                handleRenderDataTable(dataFilter)
-
-            }
+            handleCheckInputSearch()
             handleToggleModalAddBook()
         } else {
             alert('Vui Long Nhap Day Du')
@@ -134,7 +137,7 @@ function App() {
     }
 
     function handleRenderDataTable(data) {
-        localStorage.setItem('databook', JSON.stringify(data))
+        localStorage.setItem('databook', JSON.stringify(dataBooks))
         let dataTable = data?.map((data, index) => {
             return ` 
             <tr>
@@ -163,7 +166,6 @@ function App() {
             )
         })
 
-        console.log(btnRemoves)
     }
 
 
